@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consulta NFSe - /*VERSAO*/</title>
+<script>(function(){var t;try{t=localStorage.getItem('tema')}catch(e){}if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t)})()</script>
+<style>
+:root{--bg:#eaeef7;--card:#fff;--ink:#151c2c;--mute:#566074;--line:#d5dbe8;--brand:#3a3fd1;--brand-ink:#fff;--chip:#e6e8fb;--field:#f3f5fb;--ok:#15803d;--okbg:#dcf3e3;--bad:#b42318;--badbg:#fde4e0;--warn:#7a4b00;--warnbg:#fff0c9;--hl:#ffe27a;--hl-ink:#3a2e00;--nbs:#1d4ed8;--nbsbg:#e2ebff;--ind:#0f766e;--indbg:#d6f1ec;--cc:#7c3aed;--ccbg:#ece4fd;--cst:#c2410c;--cstbg:#fde9d9;--sn:#be185d;--snbg:#fce3ee;--go:#15803d;--gobg:#dcf3e3;--shadow:0 1px 2px rgba(21,28,44,.07),0 6px 18px rgba(21,28,44,.06);--display:"Segoe UI Variable Display","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;--sans:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;--mono:"Cascadia Mono","SF Mono",Consolas,ui-monospace,monospace}
+:root[data-theme="dark"]{--bg:#0b0f1a;--card:#141a2a;--ink:#e9edf7;--mute:#98a3bb;--line:#263049;--brand:#8f9bff;--brand-ink:#0d1030;--chip:#1c2442;--field:#10162a;--ok:#7fd9a2;--okbg:#14291c;--bad:#ff9b8a;--badbg:#37191a;--warn:#f1c76b;--warnbg:#33280e;--hl:#f0c94a;--hl-ink:#2a1f00;--nbs:#8cb4ff;--nbsbg:#18284d;--ind:#4fe0cc;--indbg:#0d3a37;--cc:#c0aaff;--ccbg:#2a2050;--cst:#ffb877;--cstbg:#40290f;--sn:#ff9fcb;--snbg:#411730;--go:#6ee79b;--gobg:#0f3320;--shadow:0 1px 2px rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.3)}
+*{box-sizing:border-box}
+html{font-size:clamp(15px,calc(.45vw + 9px),26px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:min(94vw,100rem);margin:0 auto;padding:1.3rem 1.3rem 4rem}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1rem}
+h1{font:700 2.1rem/1.15 var(--display);letter-spacing:-.02em;margin:0 0 .4rem;display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap}
+.ver{font:500 .8rem var(--mono);color:var(--brand);background:var(--chip);padding:.15rem .55rem;border-radius:.35rem;letter-spacing:0}
+.sub{color:var(--mute);margin:0}
+label{font-weight:600;display:block;margin:0 0 .4rem;font-size:.93rem}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);padding:.4rem 0 .7rem;margin-top:-.4rem}
+.bar{display:flex;gap:.7rem;align-items:stretch}
+input[type=search],textarea{width:100%;padding:.75rem .95rem;font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:.8rem;box-shadow:var(--shadow)}
+input[type=search]{font-size:1.2rem;height:3.6rem;padding-left:3rem;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%238b93a1' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:1rem center;background-size:1.3rem}
+input[type=search]::-webkit-search-cancel-button{display:none}
+textarea{min-height:6rem;resize:vertical;font:.9rem/1.5 var(--mono);box-shadow:none;border-radius:.65rem}
+input:focus,textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 .3rem color-mix(in srgb,var(--brand) 24%,transparent)}
+.hint{color:var(--mute);font-size:.87rem;margin:.4rem 0 0}
+.btn{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:.8rem;padding:0 1.2rem;font:600 .93rem var(--sans);cursor:pointer;white-space:nowrap;box-shadow:var(--shadow)}
+.btn:hover{border-color:var(--brand);color:var(--brand)}
+.tema{height:2.6rem;flex:none}
+button:focus-visible,summary:focus-visible{outline:3px solid color-mix(in srgb,var(--brand) 50%,transparent);outline-offset:2px}
+details{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--brand);border-radius:.8rem;padding:.8rem 1.1rem;margin:1rem 0;box-shadow:var(--shadow)}
+summary{cursor:pointer;font-weight:600;border-radius:.4rem}
+details[open]>summary{margin-bottom:.3rem}
+.count{color:var(--mute);margin:1.1rem 0 .7rem;font-size:.87rem;min-height:1px}
+#out{display:grid;grid-template-columns:minmax(0,1fr);gap:1.1rem}
+.item{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--brand);border-radius:.9rem;padding:1.2rem 1.35rem 1.1rem;box-shadow:var(--shadow);min-width:0}
+.item h2{font:650 1.2rem/1.3 var(--display);margin:0 0 .7rem;display:flex;gap:.4rem .8rem;align-items:baseline;flex-wrap:wrap}
+.item h2>span:nth-child(2){flex:1 1 14rem}
+.code{font:700 1rem var(--mono);color:var(--brand-ink);background:var(--brand);padding:.15rem .6rem;border-radius:.4rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.badge{font:600 .8rem var(--sans);padding:.15rem .6rem;border-radius:99px}
+.ok{background:var(--okbg);color:var(--ok)}.bad{background:var(--badbg);color:var(--bad)}
+.how{background:var(--gobg);color:var(--ink);border-left:4px solid var(--go);border-radius:.3rem .7rem .7rem .3rem;padding:.6rem .85rem;margin:0 0 .8rem;font-size:.97rem}
+.how b{color:var(--go)}
+.how.nok{background:var(--badbg);border-left-color:var(--bad)}
+.nbs{border:1px solid var(--line);border-radius:.7rem;margin:0 0 .7rem;overflow:hidden}
+.row{--c:var(--brand);--cbg:var(--chip);display:grid;grid-template-columns:9rem minmax(0,1fr);border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.r-nbs{--c:var(--nbs);--cbg:var(--nbsbg)}.r-ind{--c:var(--ind);--cbg:var(--indbg)}.r-cc{--c:var(--cc);--cbg:var(--ccbg)}.r-cst{--c:var(--cst);--cbg:var(--cstbg)}.r-sn{--c:var(--sn);--cbg:var(--snbg)}
+.k{color:var(--c);font:700 .85rem var(--sans);background:var(--cbg);border-left:4px solid var(--c);padding:.65rem .8rem}
+.v{padding:.6rem .95rem;min-width:0}
+.copy{border:1px solid var(--c);background:transparent;color:var(--c);border-radius:.4rem;padding:0 .55rem;font:600 .8rem var(--sans);cursor:pointer;margin-left:.5rem;line-height:1.4rem}
+.copy:hover{background:var(--c);color:var(--card)}
+.mono{font:700 .92rem var(--mono);color:var(--c);background:var(--cbg);padding:.05rem .4rem;border-radius:.3rem;font-variant-numeric:tabular-nums}
+.nbs .badge.ok{white-space:nowrap;background:var(--hl);color:var(--hl-ink);border-radius:.2rem;margin-left:.4rem}
+.ind{margin:0;padding-left:0;list-style:none}
+.ind li{margin:0 0 .4rem;font-size:.93rem}
+.ind li:last-child{margin-bottom:0}
+.warn{background:var(--warnbg);color:var(--warn);border-left:4px solid var(--warn);border-radius:.3rem .6rem .6rem .3rem;padding:.55rem .8rem;margin:.55rem 0 0;font-size:.9rem}
+.nbs>.warn{margin:0;border-radius:0}
+.empty{padding:1.6rem;text-align:center;color:var(--mute)}
+footer{color:var(--mute);font-size:.83rem;margin-top:2rem;display:flex;justify-content:space-between;gap:.4rem 1.5rem;flex-wrap:wrap}
+ul.n{margin:.6rem 0 0;padding-left:1.3rem;columns:auto 36rem;column-gap:2.6rem;text-align:justify;hyphens:auto}
+ul.n li{margin:0 0 .6rem;break-inside:avoid}
+ul.n li::marker{color:var(--brand)}
+ul.n li>b:first-child{color:var(--brand)}
+.why{color:var(--mute);font-size:.87rem;margin:0 0 .7rem}
+.note{background:var(--warnbg);color:var(--warn);border-left:4px solid var(--warn);border-radius:.3rem .7rem .7rem .3rem;padding:.7rem .95rem;margin:0 0 1rem;font-size:.93rem}
+@media (max-width:640px){.wrap{padding:1rem .9rem 3rem}h1{font-size:1.7rem}.row{grid-template-columns:1fr}.k{padding:.4rem .8rem}.bar{flex-direction:column}.btn{height:2.7rem}.head{flex-direction:column}ul.n{columns:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div>
+      <h1>Consulta NFSe <span class="ver">/*VERSAO*/</span></h1>
+      <p class="sub">Descreva o serviço e veja o item da LC 116, a NBS, o indicador da operação (cIndOp) e a classificação tributária (IBS/CBS).</p>
+    </div>
+    <button id="tema" class="btn tema" type="button"></button>
+  </div>
+
+  <label for="q">Serviço prestado</label>
+  <div class="top"><div class="bar">
+    <input id="q" type="search" placeholder="Ex.: serviços administrativos, ultrassom, contabilidade, software…" autocomplete="off" autofocus>
+    <button id="limpar" class="btn" type="button">Limpar tela</button>
+  </div></div>
+  <p class="hint">Descreva do seu jeito ou use o número do item (ex.: 4.03) ou o código da NBS.</p>
+
+  <details id="cli">
+    <summary>Conferir com a lista do cliente (opcional)</summary>
+    <p class="hint" style="margin-top:8px">Cole aqui as opções do campo <b>Serviço / Atividade</b> do sistema da prefeitura. A página mostra qual opção escolher e avisa quando o item não está cadastrado.</p>
+    <textarea id="lista" aria-label="Opções do campo Serviço / Atividade do cliente" placeholder="4.02 / 8640208 - serviços de diagnóstico por registro gráfico…&#10;4.03 / 8640202 - laboratórios clínicos"></textarea>
+    <p class="hint" id="listaInfo"></p>
+  </details>
+
+  <div id="count" class="count"></div>
+  <div id="note"></div>
+  <div id="out"></div>
+
+  <details>
+    <summary>Como usar e o que observar</summary>
+    <ul class="n">
+      <li><b>Serviço / Atividade:</b> escolha, na lista do cliente, a opção que <b>começa com o número do item indicado</b> (a lista pode mostrar "4.03" em vez de "04.03"). Se o item não existir, é preciso <b>incluir a atividade (CNAE) no cadastro municipal do cliente</b>.</li>
+      <li><b>NBS:</b> alguns itens têm mais de uma NBS possível. <b>Escolha a que descreve o serviço.</b> Só são válidas as combinações item × NBS desta tabela.</li>
+      <li><b>cIndOp:</b> o código diz <b>onde o serviço é considerado prestado</b>, e esse local define para onde vão o IBS e a CBS. Ele depende de como o serviço é prestado (veja a descrição de cada um nos resultados). Na dúvida entre presencial e à distância, <b>confirme com o contador</b>.</li>
+      <li><b>cIndOp 0301xx (serviço presencial para pessoa física):</b> vale quando o serviço é feito fisicamente sobre a pessoa ou ela o usufrui presencialmente (art. 11, III, da LC 214/2025). Use <b>030101</b> se o serviço é feito <b>no estabelecimento do prestador</b> (ex.: consulta no consultório, corte no salão, aula na escola). Use <b>030102</b> se é feito <b>fora do estabelecimento do prestador</b> (ex.: atendimento na casa do cliente, personal trainer no condomínio do aluno).</li>
+      <li><b>cIndOp 10xxxx:</b> é a regra geral, para os demais serviços, <b>inclusive os feitos à distância</b> (ex.: contabilidade, consultoria, software, advocacia). A tabela do Anexo VIII traz o código para operação onerosa com adquirente no Brasil (<b>100301</b>), e o imposto vai para o <b>domicílio do tomador</b>. Para adquirente no exterior (<b>100302</b>) ou operação não onerosa (<b>100401</b>), vale a regra da aba "REGRA OP NÃO ONE_EXT" (indicada abaixo do código). <b>Serviço só em parte presencial segue a regra geral (100301).</b></li>
+      <li><b>Simples Nacional:</b> a linha "Simples Nac." mostra o código de atividade do Simples da tabela v1.02 (por exemplo, 9 = sujeito ao Fator R, Anexo III ou V). É informação de apoio; <b>confirme o enquadramento do cliente</b>.</li>
+      <li><b>CST-IBS/CBS:</b> os três primeiros dígitos da classificação tributária (o sistema costuma preencher sozinho).</li>
+      <li><b>Simples Nacional:</b> até 31/12/2026 a NFS-e sem IBS/CBS não é rejeitada pelo sistema nacional. Para optantes, o destaque está previsto <b>a partir de 01/01/2027</b> (Ato Conjunto RFB/CGIBS nº 4/2026, conforme divulgado pelo CRC-MS); as fontes divergem sobre quem é obrigado (todos os optantes ou só os que escolherem o destaque em setembro/2026). Preencher agora é recomendável, mas <b>confirme a regra do seu município e do seu cliente</b>.</li>
+      <li><b>Fonte:</b> Anexo VIII (correlação item × NBS × cIndOp × cClassTrib) e Anexo VII (cIndOp), Anexo VIII v1.02.00 (26/10/2026) e Anexo VII (cIndOp) v1.03.00 (NT 009) do Portal Nacional da NFS-e; local da operação conforme art. 11 da LC 214/2025. A própria Receita trata a tabela como preliminar e sujeita a alterações. <b>Ferramenta de apoio: não substitui a análise do enquadramento de cada serviço.</b></li>
+    </ul>
+  </details>
+  <footer><span>Base: Anexo VIII v1.02.00 (26/10/2026) e Anexo VII v1.03.00. Funciona offline e não envia dados a lugar nenhum.</span><span>Desenvolvido por Romany Melo.</span></footer>
+</div>
+
+<script>
+const DATA = /*DATA*/;
+const VAR = {
+  '100101':'Se o adquirente for do exterior, o código é 100102; se a operação não for onerosa, 100201.',
+  '100301':'Se o adquirente for do exterior, o código é 100302; se a operação não for onerosa, 100401.',
+  '100501':'Se o adquirente for do exterior, o código é 100502; se a operação não for onerosa, 100601.'
+};
+
+const $ = s => document.querySelector(s);
+const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/-/g,' ');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const noZero = c => c.replace(/^0(\d\.)/,'$1');
+
+// ===== Busca inteligente (sem IA em tempo real): vocabulário por item + relevância + tolerância a erro =====
+const STOP = new Set(['de','da','do','das','dos','e','em','para','por','com','a','o','as','os','um','uma','no','na','nos','nas','ao','aos','servico','servicos','prestacao','geral','tipo','que','ou','empresa','trabalho']);
+const stem = w => { let x = w; if(x.length > 5) x = x.replace(/(as|os|es|a|o|e|s)$/, ''); else if(x.length > 3 && x.endsWith('s')) x = x.slice(0, -1); return x.length > 8 ? x.slice(0, 8) : x; };
+const toks = s => norm(s).split(/[^a-z0-9]+/).filter(Boolean);
+const stems = s => toks(s).filter(w => !STOP.has(w) && w.length > 1).map(stem);
+
+// NBS mais provável por tipo de serviço (saúde), conferido no Anexo VIII
+const HINT = [
+  [/\b(usg|ultrassom|ultrassonografia|ultra som|ecografia|raio ?x|radiografia|tomografia|ressonancia)\b/, ['1.2301.94.00']],
+  [/\b(exame de sangue|hemograma|laboratorio|analise clinica|exames laboratoriais)\b/, ['1.2301.93.00']],
+  [/\b(consulta|medico|medica|ortopedista|cardiologista|pediatra|ginecologista)\b/, ['1.2301.22.00','1.2301.21.00']],
+  [/\b(fono|fonoaudiologo|fonoaudiologa|fonoaudiologia)\b/, ['1.2301.99.00']],
+  [/\b(fisio|fisioterapeuta|fisioterapia)\b/, ['1.2301.92.00']],
+  [/\b(dentista|odonto|odontologia)\b/, ['1.2301.23.00']],
+  [/\b(psicologo|psicologa|psicologia)\b/, ['1.2301.98.00']],
+  [/\b(nutricionista|nutricao)\b/, ['1.2301.99.00']],
+  [/\b(enfermeiro|enfermagem|curativo|injecao)\b/, ['1.2301.91.00']],
+];
+
+const NOTES = [
+  [/\b(restaurante|lanchonete|bar|padaria|pizzaria|marmita|refeicao|refeicoes|alimentacao|comida)\b/, 'Fornecimento de alimentação e bebidas costuma ser tratado como venda de mercadoria (ICMS), fora da lista de serviços da LC 116. Os itens abaixo são só aproximações; confirme o enquadramento.'],
+  [/\b(venda|vendas|loja|comercio|mercadoria|mercadorias|revenda)\b/, 'Venda de mercadorias não é serviço da LC 116 (é ICMS). Se houver um serviço junto (instalação, conserto, montagem), busque pelo serviço.'],
+  [/\b(intermunicipal|interestadual)\b/, 'A lista da LC 116 só traz transporte de natureza municipal (itens 16.01 e 16.02). Transporte intermunicipal ou interestadual costuma ser ICMS. Os itens abaixo são só aproximações; confirme o enquadramento.'],
+  [/\b(peca|pecas)\b/, 'Peças e partes empregadas em conserto ou manutenção ficam sujeitas ao ICMS (ressalva da descrição dos itens 14.01 e 14.03). O ISS incide só sobre o serviço.'],
+];
+const VOCAB = new Set();
+const items = DATA.items.map(it => {
+  const d = new Set(stems(it.d));
+  const kwPhrases = (it.k || []).map(p => ({ p, n: norm(p), s: new Set(stems(p)) }));
+  const k = new Set(); kwPhrases.forEach(x => x.s.forEach(w => k.add(w)));
+  const nb = new Set(); it.n.forEach(n => stems(n.d).forEach(w => nb.add(w)));
+  [d, k, nb].forEach(set => set.forEach(w => VOCAB.add(w)));
+  return { it, d, k, nb, kwPhrases, dn: norm(it.d), code: noZero(it.i) };
+});
+const VOCAB_ARR = [...VOCAB];
+const DF = {};
+items.forEach(x => { const all = new Set([...x.d, ...x.k, ...x.nb]); all.forEach(w => DF[w] = (DF[w] || 0) + 1); });
+const idf = w => Math.log(1 + items.length / (DF[w] || 1));
+
+function lev(a, b, max){
+  if(Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({length: b.length + 1}, (_, i) => i);
+  for(let i = 1; i <= a.length; i++){
+    const cur = [i]; let min = i;
+    for(let j = 1; j <= b.length; j++){
+      cur[j] = Math.min(prev[j] + 1, cur[j-1] + 1, prev[j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+      if(cur[j] < min) min = cur[j];
+    }
+    if(min > max) return max + 1;
+    prev = cur;
+  }
+  return prev[b.length];
+}
+
+let lastNote = '';
+function runQuery(q){
+  lastNote = '';
+  const nq = norm(q).trim();
+  if(!nq) return [];
+  if(/^\d{1,2}\.\d{2}(\.\d{2})?$/.test(nq)){
+    const k = noZero(nq);
+    return items.filter(x => x.code === k || x.it.i === nq).map(x => ({ it: x.it, score: 99, why: [], level: 'alta' }));
+  }
+  if(/^[\d.\s]+$/.test(nq) && nq.replace(/\D/g,'').length >= 3){
+    const dig = nq.replace(/\D/g,'');
+    const out = [];
+    items.forEach(x => {
+      const hit = new Set(x.it.n.filter(n => n.c.replace(/\./g,'').startsWith(dig)).map(n => n.c));
+      if(hit.size) out.push({ it: x.it, score: 99, why: [], level: 'media', nbsHit: hit });
+    });
+    return out;
+  }
+  let base = stems(q);
+  if(!base.length) base = toks(q).map(stem);
+  const approx = [];
+  // cada palavra vira um grupo de alternativas
+  const groups = base.map(w => {
+    if(VOCAB.has(w)) return [w];
+    if(w.length >= 4){
+      const pre = VOCAB_ARR.filter(v => v.startsWith(w));
+      if(pre.length) return [w, ...pre.slice(0, 12)];
+    }
+    if(w.length >= 5){
+      const max = w.length >= 8 ? 2 : 1; let best = null, bd = max + 1;
+      for(const v of VOCAB_ARR){ if(v[0] !== w[0]) continue; const dd = lev(w, v, max); if(dd < bd){ bd = dd; best = v; } }
+      if(best){ approx.push(best); return [w, best]; }
+    }
+    return [w];
+  });
+  if(approx.length) lastNote = 'Entendi também como: ' + approx.join(', ') + '.';
+  const need = Math.max(1, Math.ceil(groups.length * 0.5));
+  const out = [];
+  items.forEach(x => {
+    let score = 0, matched = 0; const why = new Set();
+    groups.forEach(g => {
+      let best = 0;
+      g.forEach(w => {
+        const inD = x.d.has(w), inK = x.k.has(w), inN = x.nb.has(w);
+        if(inK) x.kwPhrases.forEach(kp => { if(kp.s.has(w)) why.add(kp.p); });
+        let v = 0;
+        if(inD || inK) v = (4 + (inD && inK ? 0.5 : 0)) * idf(w); else if(inN) v = 1.5 * idf(w);
+        if(v > best) best = v;
+      });
+      if(best > 0){ score += best; matched++; }
+    });
+    if(matched < need) return;
+    if(groups.length > 1 && matched === groups.length) score += 12;
+    if(x.kwPhrases.some(kp => kp.n.includes(nq))) score += 14;
+    if(x.dn.includes(nq)) score += 6;
+    if(x.kwPhrases.some(kp => kp.n === nq)) score += 18;
+    out.push({ it: x.it, score, why: [...why].slice(0, 4) });
+  });
+  out.sort((a, b) => b.score - a.score || (a.it.i < b.it.i ? -1 : 1));
+  const top = out.length ? out[0].score : 0;
+  out.forEach(r => { r.level = (!approx.length && r.score >= top * 0.7) ? 'alta' : 'media'; });
+  return out;
+}
+
+
+// Lista do cliente
+let cliente = null; // Map item(sem zero) -> [linhas]
+function parseLista(){
+  const txt = $('#lista').value;
+  const m = new Map();
+  txt.split(/\n+/).forEach(l => {
+    const r = l.match(/(\d{1,2}\.\d{2}(?:\.\d{2})?)\s*(?:\/|-)?/);
+    if(r){ const key = r[1].replace(/^0(\d\.)/,'$1'); if(!m.has(key)) m.set(key, []); m.get(key).push(l.trim()); }
+  });
+  cliente = m.size ? m : null;
+  $('#listaInfo').textContent = m.size ? m.size + ' item(ns) reconhecido(s) na lista do cliente.' : '';
+}
+
+function copyBtn(t){ return '<button class="copy" data-c="'+esc(t)+'" type="button">copiar</button>'; }
+
+function render(){
+  const q = $('#q').value;
+  const res = runQuery(q);
+  const out = $('#out');
+  if(!q.trim()){ $('#note').innerHTML=''; out.innerHTML = ''; $('#count').textContent=''; return; }
+  $('#count').textContent = res.length ? res.length + ' item(ns) da LC 116 encontrado(s), do mais para o menos relacionado.' + (lastNote ? ' ' + lastNote : '') : '';
+  const nqq = norm(q); const nt = NOTES.find(([re]) => re.test(nqq)); $('#note').innerHTML = nt ? '<div class="note">' + esc(nt[1]) + '</div>' : '';
+  if(!res.length){ out.innerHTML = '<div class="empty">Nada encontrado. Tente outra palavra (ex.: "consultoria", "limpeza", "saúde"), o número do item ou o código da NBS.</div>'; return; }
+  const nq = norm(q);
+  const hints = new Set(); HINT.forEach(([re, codes]) => { if(re.test(nq)) codes.forEach(c => hints.add(c)); });
+  out.innerHTML = res.slice(0,40).map(r => { const it = r.it;
+    const key = noZero(it.i);
+    let badge = '', how = '';
+    if(cliente){
+      if(cliente.has(key)){ badge = '<span class="badge ok">no cadastro do cliente</span>'; how = '<div class="how">Escolha em Serviço / Atividade: <b>' + cliente.get(key).map(esc).join('</b> ou <b>') + '</b></div>'; }
+      else { badge = '<span class="badge bad">não está no cadastro do cliente</span>'; how = '<div class="how nok">Este item não aparece na lista do cliente. Será preciso cadastrar uma atividade (CNAE) desse item na prefeitura.</div>'; }
+    } else {
+      how = '<div class="how">Em <b>Serviço / Atividade</b>, escolha a opção que começa com <b>' + esc(key) + ' /</b></div>';
+    }
+    const nb = it.n.filter(n => !r.nbsHit || r.nbsHit.has(n.c)).map(n => {
+      const inds = n.o.map(o => { const d = DATA.indop[o] || {}; return '<li><span class="mono">'+o+'</span> · '+esc(d.t||'')+(d.l?' <span style="color:var(--mute)">(local: '+esc(d.l)+')</span>':'')+(VAR[o]?'<br><span style="color:var(--mute);font-size:.85em">'+VAR[o]+'</span>':'')+'</li>'; }).join('');
+      const ccs = n.cc || [];
+      const csts = [...new Set(ccs.map(x => x[0].slice(0,3)))];
+      const warn = ccs.some(x => x[0] === '820001') ? '<div class="warn">Planos de saúde usam a classificação 820001, diferente do restante da saúde.</div>' : '';
+      const multi = ccs.length > 1;
+      const ccHtml = ccs.map(x => '<div><span class="mono">'+esc(x[0])+'</span>'+copyBtn(x[0])+' — '+esc(x[1])+'</div>').join('');
+      const snHtml = n.sn ? '<div class="row r-sn"><span class="k">Simples Nac.</span><span class="v">Atividade <span class="mono">'+esc(n.sn[0])+'</span> — '+esc(n.sn[1])+'</span></div>' : '';
+      return '<div class="nbs">'
+        + '<div class="row r-nbs"><span class="k">NBS</span><span class="v"><span class="mono">'+esc(n.c)+'</span>'+copyBtn(n.c.replace(/\./g,''))+' — '+esc(n.d)+(hints.has(n.c)?' <span class="badge ok">mais provável</span>':'')+'</span></div>'
+        + '<div class="row r-ind"><span class="k">cIndOp</span><span class="v"><ul class="ind">'+(inds||'<li>não definido na tabela</li>')+'</ul></span></div>'
+        + '<div class="row r-cc"><span class="k">'+(multi?'Classificações':'Classificação')+'</span><span class="v">'+ccHtml+(multi?'<div class="hint">Mais de uma classificação prevista para esta NBS: escolha conforme o caso concreto.</div>':'')+'</span></div>'
+        + '<div class="row r-cst"><span class="k">CST</span><span class="v"><span class="mono">'+esc(csts.join(' / '))+'</span></span></div>'
+        + snHtml
+        + warn + '</div>';
+    }).join('');
+    const alt = it.a.length ? '<div class="warn">Outras classificações previstas para este item: ' + it.a.map(a => '<b>'+esc(a.cc)+'</b> ('+esc(a.cn)+')').join('; ') + '. Use conforme o caso concreto.</div>' : '';
+    const rel = (r.level === 'alta' && !nt) ? '<span class="badge ok">boa correspondência</span>' : '';
+    const why = r.why && r.why.length ? '<div class="why">Relacionado a: ' + r.why.map(esc).join(' · ') + '</div>' : '';
+    return '<section class="item"><h2><span class="code">'+esc(it.i)+'</span><span>'+esc(it.d)+'</span>'+rel+badge+'</h2>'+why+how+nb+alt+'</section>';
+  }).join('') + (res.length > 40 ? '<div class="empty">Mostrando 40 de '+res.length+'. Refine a busca.</div>' : '');
+}
+
+$('#q').addEventListener('input', render);
+const temaBtn = $('#tema');
+function setTema(t){ document.documentElement.setAttribute('data-theme', t); temaBtn.textContent = t === 'dark' ? 'Modo claro' : 'Modo escuro'; try{ localStorage.setItem('tema', t); }catch(e){} }
+temaBtn.addEventListener('click', () => setTema(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+temaBtn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? 'Modo claro' : 'Modo escuro';
+$('#limpar').addEventListener('click', () => { $('#q').value = ''; $('#lista').value = ''; parseLista(); render(); $('#q').focus(); });
+$('#lista').addEventListener('input', () => { parseLista(); render(); });
+$('#out').addEventListener('click', e => { const b = e.target.closest('.copy'); if(!b) return; const t = b.dataset.c; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => { b.textContent='copiado'; setTimeout(()=>b.textContent='copiar',1200); }).catch(()=>{}); });
+const p = new URLSearchParams(location.search);
+if(p.get('q')) $('#q').value = p.get('q');
+if(p.get('lista')) { $('#lista').value = p.get('lista'); $('#cli').open = true; parseLista(); }
+render();
+</script>
+</body>
+</html>

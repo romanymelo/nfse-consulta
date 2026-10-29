@@ -1,0 +1,11 @@
+{
+  "name": "nfse-consulta-codigos",
+  "version": "2.0.0",
+  "description": "Consulta offline de códigos para emissão de NFS-e (item LC 116, NBS, cIndOp, cClassTrib) a partir dos Anexos VII e VIII da NFS-e Nacional",
+  "private": true,
+  "scripts": {
+    "atualizar": "python3 -I src/atualizar.py",
+    "teste": "node testes/itens_e_lista_cliente.js \"$(ls dist/*.html | tail -1 | xargs realpath)\""
+  },
+  "devDependencies": { "playwright": "^1.48.0" }
+}
