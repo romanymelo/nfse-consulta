@@ -53,6 +53,8 @@ details[open]>summary{margin-bottom:.3rem}
 .copy:hover{background:var(--c);color:var(--card)}
 .mono{font:700 .92rem var(--mono);color:var(--c);background:var(--cbg);padding:.05rem .4rem;border-radius:.3rem;font-variant-numeric:tabular-nums}
 .nbs .badge.ok{white-space:nowrap;background:var(--hl);color:var(--hl-ink);border-radius:.2rem;margin-left:.4rem}
+.tag{font:600 .78rem var(--sans);color:var(--ind);background:var(--indbg);border:1px solid var(--ind);border-radius:99px;padding:0 .5rem;margin:0 .2rem;white-space:nowrap}
+.dest{font-weight:600;color:var(--ind);background:var(--indbg);border-radius:.25rem;padding:0 .25rem}
 .ind{margin:0;padding-left:0;list-style:none}
 .ind li{margin:0 0 .4rem;font-size:.93rem}
 .ind li:last-child{margin-bottom:0}
@@ -122,6 +124,9 @@ const VAR = {
   '100501':'Se o adquirente for do exterior, o código é 100502; se a operação não for onerosa, 100601.'
 };
 
+const DIST = { '100301': 'serviços prestados à distância' };
+const DEST = { '030101': 'Estabelecimento do fornecedor', '030102': 'diverso do estabelecimento do fornecedor' };
+const destaque = (o, t) => { const e = esc(t), h = esc(DEST[o] || ''); return h && e.includes(h) ? e.replace(h, '<span class="dest">' + h + '</span>') : e; };
 const $ = s => document.querySelector(s);
 const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/-/g,' ');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -281,7 +286,7 @@ function render(){
       how = '<div class="how">Em <b>Serviço / Atividade</b>, escolha a opção que começa com <b>' + esc(key) + ' /</b></div>';
     }
     const nb = it.n.filter(n => !r.nbsHit || r.nbsHit.has(n.c)).map(n => {
-      const inds = n.o.map(o => { const d = DATA.indop[o] || {}; return '<li><span class="mono">'+o+'</span> · '+esc(d.t||'')+(d.l?' <span style="color:var(--mute)">(local: '+esc(d.l)+')</span>':'')+(VAR[o]?'<br><span style="color:var(--mute);font-size:.85em">'+VAR[o]+'</span>':'')+'</li>'; }).join('');
+      const inds = n.o.map(o => { const d = DATA.indop[o] || {}; return '<li><span class="mono">'+o+'</span> · '+esc(d.t||'')+(DIST[o]?' <span class="tag">'+DIST[o]+'</span>':'')+(d.l?' <span style="color:var(--mute)">(local: '+destaque(o, d.l)+')</span>':'')+(VAR[o]?'<br><span style="color:var(--mute);font-size:.85em">'+VAR[o]+'</span>':'')+'</li>'; }).join('');
       const ccs = n.cc || [];
       const csts = [...new Set(ccs.map(x => x[0].slice(0,3)))];
       const warn = ccs.some(x => x[0] === '820001') ? '<div class="warn">Planos de saúde usam a classificação 820001, diferente do restante da saúde.</div>' : '';
