@@ -125,8 +125,8 @@ const VAR = {
 };
 
 const DIST = { '100301': 'serviços prestados à distância' };
-const DEST = { '030101': 'Estabelecimento do fornecedor', '030102': 'diverso do estabelecimento do fornecedor' };
-const destaque = (o, t) => { const e = esc(t), h = esc(DEST[o] || ''); return h && e.includes(h) ? e.replace(h, '<span class="dest">' + h + '</span>') : e; };
+const DEST = /diverso do estabelecimento do fornecedor|Estabelecimento do fornecedor/g;
+const destaque = (o, t) => esc(t).replace(DEST, '<span class="dest">$&</span>');
 const $ = s => document.querySelector(s);
 const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/-/g,' ');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
