@@ -43,7 +43,9 @@ Pontos de atenção do Anexo VIII que o código trata:
 
 Regra da aba "REGRA OP NÃO ONE_EXT" (Anexo VIII): o cIndOp da tabela vale para operação onerosa com adquirente no Brasil. Para adquirente no exterior ou operação não onerosa, o código muda (100301 → 100302 ou 100401, e assim por diante). A página mostra essa variante.
 
-![Tela da página](docs/tela.png)
+| Modo claro | Modo escuro |
+|---|---|
+| ![Tela no modo claro](docs/tela-claro.png) | ![Tela no modo escuro](docs/tela-escuro.png) |
 
 ## Como usar
 
